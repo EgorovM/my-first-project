@@ -6,7 +6,7 @@ import datetime
 class Order(models.Model):
     address = models.CharField(max_length = 20)
     problem = models.CharField(max_length=30)
-    telephone = models.IntegerField(default = 0)    
+    telephone = models.CharField(max_length = 10)    
     pub_date = models.DateTimeField('date published')
 
     def __str__(self):

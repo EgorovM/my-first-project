@@ -18,7 +18,7 @@ def index(request):
             orr.pub_date  = timezone.now()
             orr.save()
 
-    latest_order_list = Order.objects.all()[::-1][:2]
+    latest_order_list = Order.objects.all()[::-1][:10]
     context = {"latest_order_list":latest_order_list}
     
     return render(request, "help/index.html",context)
