@@ -1,0 +1,56 @@
+{% load staticfiles %}
+<html>
+    <body>
+        <head>
+            <title>Заказ</title>
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+            <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
+            <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        </head>
+
+        <style>
+            .post {
+                padding-left: 15px;
+        }
+            h1 a{
+                font-family: 'Lobster';
+                color: white;
+        }
+            .page-header {
+                background-color: #FCA205;
+                margin-top: 0;
+                padding: 20px 20px 20px 40px;
+        }
+        </style>   
+        <div class = "page-header">
+                <h1><a href="/help/">Онлайн сообщество помощи в г.Нюрба</a></h1>
+        </div>
+
+        <div class = "post">
+            <p>Адрес:{{order.address}}</p>
+            <p>Просьба:{{order.problem}}</p>
+            <p>Телефон:{{order.telephone}}</p>
+            <p>Комментарии:</p>
+            
+            <div class = comment>    
+                {% for comment in latest_cmt_list %}
+                    {% if order.id == comment.order_info.id %}
+                        <p>-----------------------------</p>       
+                        <p>{{comment.comment_text}}</p>   
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class = "button">
+            <form action = "." method = "post">
+                {% csrf_token %}
+                <label for = "comment_text"> Написать комментарий: </label>
+                <input type = "text" name = "comment_text">
+                <input type = "submit" name = "ok_button" value = "OK"> 
+            </form>
+                <ul>
+                    <a href="/help/"> <input type = "submit" name = "back_button" value = "Назад, к заказам"></a>
+                </ul>
+        </div>
+    </body>
+</html>

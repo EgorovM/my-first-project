@@ -1,0 +1,55 @@
+{% load staticfiles %}
+<html>
+    <body>
+        <head>
+            <title>Онлайн сообщество помощи</title>
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js">
+            <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
+            <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        </head>
+        <style>
+            .post {
+                padding-left: 15px;
+        }
+            h1 a{
+                font-family: 'Lobster';
+                color: white;
+        }
+            .page-header {
+                background-color: #FCA205;
+                margin-top: 0;
+                padding: 20px 20px 20px 40px;
+        }
+        </style>   
+        <div class = "page-header">
+                <h1><a href="/help/">Онлайн сообщество помощи в г.Нюрба</a></h1>
+        </div>
+
+        <div class = "post">
+        {% for order in latest_order_list %}
+            <p>Опубликовано: {{ order.pub_date }}</p>
+            <p>Адрес:{{order.address}}</p>
+            <p>Просьба:{{order.problem}}</p>
+            <p>Телефон:{{order.telephone}}</p>
+                <ul>
+                <a href="/help/{{ order.id }}/"> <input name = "comment_button" type="submit" value = "Посмотреть комментарии"></a>
+                </ul>
+        {% endfor %}
+            <form action = "." method = "post">
+                {% csrf_token %}
+                <label for = "address">Адрес:</label>
+                <input type = "text" name = "address">
+
+                <label for = "problem">Просьба:</label>
+                <input type = "text" name = "problem">
+
+                <label for = "telephone">Телефон:</label>
+                <input type = "text" name = "telephone" max_length = 11>
+
+                <input type = "submit" name = "ok_button" value = "OK">
+            </form>
+        </div>
+    </body>
+</html>
