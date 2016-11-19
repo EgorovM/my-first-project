@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Order, Comment
 from django.shortcuts import render
 from django.utils import timezone
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def index(request):
     if request.method == "POST":
         if "ok_button" in request.POST:
@@ -18,7 +18,19 @@ def index(request):
             orr.pub_date  = timezone.now()
             orr.save()
 
-    latest_order_list = Order.objects.all()[::-1][:10]
+    latest_order_list = Order.objects.all()[::-1]
+    paginator = Paginator(latest_order_list,2)
+
+    page = request.GET.get('page')
+    try:
+        latest_order_list = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        latest_order_list = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        latest_order_list = paginator.page(paginator.num_pages)
+
     context = {"latest_order_list":latest_order_list}
     
     return render(request, "help/index.html",context)

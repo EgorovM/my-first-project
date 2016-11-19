@@ -4,6 +4,7 @@ from django.db import models
 import datetime
 
 class Order(models.Model):
+    
     address = models.CharField(max_length = 20)
     problem = models.CharField(max_length=30)
     telephone = models.CharField(max_length = 10)    
@@ -13,7 +14,8 @@ class Order(models.Model):
         return self.telephone
 
 class Comment(models.Model):
-    order_info = models.ForeignKey(Order,on_delete = models.CASCADE)
+
+    order_info = models.ForeignKey(Order)
     comment_text = models.CharField(max_length = 30)
     
     def __str__(self):
