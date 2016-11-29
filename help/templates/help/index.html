@@ -3,11 +3,12 @@
     <body>
         <head>
             <title>Онлайн сообщество помощи</title>
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js">
             <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
-            <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+            <link rel="stylesheet" href="{% static 'help/css/bootstrap.min.css' %}">
+
+            <script src="{% static 'help/js/jquery.min.js' %}"></script>
+            <script src="{% static 'help/js/bootstrap.min.js' %}"></script>
+
         </head>
         <style>
             .post {
@@ -22,14 +23,18 @@
                 margin-top: 0;
                 padding: 20px 20px 20px 40px;
         }
-        </style>   
+            .author {
+                color: white;
+                font-family: 'Lobster';
+            }
+        </style>
         <div class = "page-header">
-                <h1><a href="/help/">Онлайн сообщество помощи в г.Нюрба</a></h1>
+                <h1><a href="/help/">Онлайн сообщество помощи в г.Нюрба</a></h1><div class = author><p>by Egorov Michil</p></div>
         </div>
+
         <div class = "post">
         {% for order in latest_order_list %}
             <p>Опубликовано: {{ order.pub_date }}</p>
-            <p>Адрес:{{order.address}}</p>
             <p>Просьба:{{order.problem}}</p>
             <p>Телефон:{{order.telephone}}</p>
                 <ul>
@@ -38,8 +43,6 @@
         {% endfor %}
             <form action = "." method = "post">
                 {% csrf_token %}
-                <label for = "address">Адрес:</label>
-                <input type = "text" name = "address">
 
                 <label for = "problem">Просьба:</label>
                 <input type = "text" name = "problem">
@@ -50,8 +53,20 @@
                 <input type = "submit" name = "ok_button" value = "OK">
             </form>
         </div>
-        <ul>
-            <a href="/help/?page={{latest_order_list.next_page_number }}"> <input name = "comment_button" type="submit" value = "Следующая страница"></a>
-        </ul> 
+
+        <form action = ".">
+            {% if latest_order_list.previous_page_number in paginator.page_range %}
+                <ul>
+                    <a href="/help/?page={{latest_order_list.previous_page_number}}"> <input type="submit" value = "Предыдущая страница"></a>
+                </ul>
+            {% endif %}
+            {% if latest_order_list.next_page_number in paginator.page_range %}
+                <ul>
+                    <a href="/help/?page={{latest_order_list.next_page_number}}"> <input type="submit" value = "Следующая страница"></a>
+                </ul>
+            {% endif %}
+        </form>
+
     </body>
 </html>
+

@@ -3,10 +3,11 @@
     <body>
         <head>
             <title>Заказ</title>
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+            <link rel="stylesheet" href="{% static 'help/css/bootstrap.min.css' %}">
+
+            <script src="{% static 'help/js/jquery.min.js' %}"></script>
+            <script src="{% static 'help/js/bootstrap.min.js' %}"></script>
             <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
-            <link rel="stylesheet" href="{% static 'css/blog.css' %}">
         </head>
 
         <style>
@@ -22,22 +23,25 @@
                 margin-top: 0;
                 padding: 20px 20px 20px 40px;
         }
-        </style>   
+            .author {
+                color: white;
+                font-family: 'Lobster';
+        }
+        </style>
         <div class = "page-header">
-                <h1><a href="/help/">Онлайн сообщество помощи в г.Нюрба</a></h1>
+                <h1><a href="/help/">Онлайн сообщество помощи в г.Нюрба</a></h1><div class = author><p>by Egorov Michil</p></div>
         </div>
 
         <div class = "post">
-            <p>Адрес:{{order.address}}</p>
             <p>Просьба:{{order.problem}}</p>
             <p>Телефон:{{order.telephone}}</p>
             <p>Комментарии:</p>
-            
-            <div class = comment>    
+
+            <div class = comment>
                 {% for comment in latest_cmt_list %}
                     {% if order.id == comment.order_info.id %}
-                        <p>-----------------------------</p>       
-                        <p>{{comment.comment_text}}</p>   
+                        <p>-----------------------------</p>
+                        <p>{{comment.comment_text}}</p>
                     {% endif %}
                 {% endfor %}
             </div>
@@ -46,7 +50,7 @@
                 {% csrf_token %}
                 <label for = "comment_text"> Написать комментарий: </label>
                 <input type = "text" name = "comment_text">
-                <input type = "submit" name = "ok_button" value = "OK"> 
+                <input type = "submit" name = "ok_button" value = "OK">
             </form>
                 <ul>
                     <a href="/help/"> <input type = "submit" name = "back_button" value = "Назад, к заказам"></a>
@@ -54,3 +58,4 @@
         </div>
     </body>
 </html>
+
