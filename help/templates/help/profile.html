@@ -1,0 +1,106 @@
+{% load staticfiles %}
+
+<html>
+        <head>
+            <title>Онлайн сообщество помощи</title>
+            <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
+            <link rel="stylesheet" href="{% static 'help/css/bootstrap.min.css' %}">
+            <link href="{% static 'help/css/sticky-footer.css' %}" rel="stylesheet">
+
+            <script src="{% static 'help/js/jquery-3.1.1.min.js' %}"></script>
+            <script src="{% static 'help/js/bootstrap.min.js' %}"></script>
+
+            <style>
+                     h1 a {
+                        font-family: 'Lobster';
+                        color: white;
+                    }
+
+                    .page-header {
+                        background-color: #FCA205;
+                        margin-top: 0;
+                        padding: 20px 20px 20px 40px;
+                    }
+
+                    .page-end {       
+                        margin-top: 0;
+                        padding: 20px 20px 20px 40px;
+                        background-color: gray;
+                        padding-right: 15px;
+                    }
+
+                    .author {
+                        color: white;
+                        font-family: 'Lobster';
+                    }
+
+                </style>
+
+        </head>
+
+    <body>
+
+        <div class = "page-header">
+                <h1><a href="/">Онлайн сообщество помощи в г.Нюрба</a></h1>
+                {% if is_auth %}
+                        <div class="form-row">
+                            <row><a href= "/editprofile/{{user.profile.id}}">Редактировать профиль</a></row>
+                            <row>|</row>
+                            <row><a href= "/logout/">Выйти</a></row>
+                            
+                            
+                            
+                            <div class = "col-lg-9">
+                                <row><a href ="/profile/{{user.profile.id}}">{{user.last_name}} {{user.first_name}}</a></row>
+                            </div>
+
+                        </div>
+
+                {% else %}  
+                    <row><a href="/login/">Войти</a></row>
+                    <row>|</row>
+                    <row><a href="/registrations/">Зарегестрироватся</a></row>
+                {% endif %}      
+
+        </div>
+        <div>
+            <div class = "row">
+                <div class = "col-md-6 col-md-offset-3 well">
+                    <p> Персональная информация:</p>
+                        <div class="form-group">
+                            <label for = "first_name">Имя:   </label>
+                            <row name="first_name"> {{user.first_name}}</row>
+                        </div>
+                        <div class="form-group">
+                            <label for = "last_name">Фамилия:</label>
+                             <row name="first_name"> {{user.last_name}}</row>
+                        </div>
+                        <div class="form-group">
+                            <label for = "telephone">Телефон:</label>
+                            <row name="first_name"> {{user.profile.telephone}}</row>
+                        </div>
+                        <div class="form-group">
+                            <label for = "address">Адрес:</label>
+                             <row name="first_name"> {{user.profile.address}}</row>
+                        </div>                
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+        <hr class=half-rule>
+        <p>
+            <footer class="bs-docs-footer">  
+                <ul class=bs-docs-footer-links> 
+                    <div class="container">
+                        <div class = "row">
+                            <div class = "col-md-offset-4">
+                                <p class="text-muted">    nrbhelp 2016</p>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </footer>
+        </p>
+    </html>
+</body>

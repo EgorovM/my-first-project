@@ -1,18 +1,15 @@
 {% load staticfiles %}
 <html>
-    <body>
         <head>
             <title>Заказ</title>
-            <link rel="stylesheet" href="{% static 'help/css/bootstrap.min.css' %}">
-
-            <script src="{% static 'help/js/jquery.min.js' %}"></script>
-            <script src="{% static 'help/js/bootstrap.min.js' %}"></script>
             <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
-        </head>
+            <link rel="stylesheet" href="{% static 'help/css/bootstrap.min.css' %}">
+            <link href="{% static 'help/css/sticky-footer.css' %}" rel="stylesheet">
 
-        <style>
-            .post {
-                padding-left: 15px;
+            <script src="{% static 'help/js/jquery-3.1.1.min.js' %}"></script>
+            <script src="{% static 'help/js/bootstrap.min.js' %}"></script>
+
+            <style>
         }
             h1 a{
                 font-family: 'Lobster';
@@ -27,35 +24,105 @@
                 color: white;
                 font-family: 'Lobster';
         }
+            .page-end {       
+                margin-top: 0;
+                padding: 20px 20px 20px 40px;
+                background-color: gray;
+                padding-right: 15px;
+        }
+            .end {
+                padding-left: 525px;
+                font-family: 'Lobster';
+        }
+            .login {
+                color: blue;
+        }
         </style>
+    <body>
+        </head>
+
+        
         <div class = "page-header">
-                <h1><a href="/help/">Онлайн сообщество помощи в г.Нюрба</a></h1><div class = author><p>by Egorov Michil</p></div>
+                <h1><a href="/">Онлайн сообщество помощи в г.Нюрба</a></h1>
+                {% if is_auth %}
+                            <div class="form-row">
+                                <row><a href= "/editprofile/{{user.profile.id}}">Редактировать профиль</a></row>
+                                <row>|</row>
+                                <row><a href= "/logout/">Выйти</a></row>
+                            
+                            
+                                <div class = "col-lg-9">
+                                    <row><a href ="/profile/{{user.profile.id}}">{{user.last_name}} {{user.first_name}}</a></row>
+                                </div>
+
+                        </div>
+
+                {% else %}  
+                    <row><a href="/login/"><button type="button" class="btn btn-primary btn-sm">Войти</button></a></row>
+                    <row>|</row>
+                    <row><a href="/registrations/">Зарегестрироватся</a></row>
+                {% endif %}        
         </div>
 
-        <div class = "post">
-            <p>Просьба:{{order.problem}}</p>
-            <p>Телефон:{{order.telephone}}</p>
-            <p>Комментарии:</p>
-
+        <div class  = row>
+            <div class = "col-md-4 col-md-offset-4 well">
+                <p>Просьба:{{order.problem}}</p>
+                <p>Телефон:{{order.telephone}}</p>
+                <p>Комментарии:</p>
             <div class = comment>
-                {% for comment in latest_cmt_list %}
-                    {% if order.id == comment.order_info.id %}
-                        <p>-----------------------------</p>
-                        <p>{{comment.comment_text}}</p>
-                    {% endif %}
-                {% endfor %}
+               
+                    {% for comment in latest_cmt_list %}
+                        {% if order.id == comment.order.id %}
+                            <p>-----------------------------</p>
+                            <p>Автор: {{user.username}}</p>
+                            <p>Комментарий:</p>
+                            <div class = "row">
+                                <div class = "col-md-1 col-md-offset-1">
+                                        </p>{{comment.comment_text}}</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
-            <div class = "button">
-            <form action = "." method = "post">
-                {% csrf_token %}
-                <label for = "comment_text"> Написать комментарий: </label>
-                <input type = "text" name = "comment_text">
-                <input type = "submit" name = "ok_button" value = "OK">
-            </form>
-                <ul>
-                    <a href="/help/"> <input type = "submit" name = "back_button" value = "Назад, к заказам"></a>
-                </ul>
+            <div class  = row>
+                <div class = "col-md-4 col-md-offset-4 well">
+                <div class = "button">
+                    <form action = "." method = "post">
+                        {% csrf_token %}
+                        <div>
+                            <label for = "comment_text"> Написать комментарий: </label>
+                            <textarea name = "comment_text" class="form-control" rows="3" placeholder="Комментарий"></textarea>
+                        </div>
+                        <div>
+                        <p>
+                            <div class = "row">
+                                <div class = "col-md-offset-9 col-md-3"> 
+                                    <input class="btn btn-success" type = "submit" name = "ok_button" value = "OK">
+                                </div>
+                            </div>
+                        </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
+
+        <hr class=half-rule>
+        <p>
+            <footer class="bs-docs-footer">  
+                <ul class=bs-docs-footer-links> 
+                    <div class="container">
+                        <div class = "row">
+                            <div class = "col-md-offset-4">
+                                <p class="text-muted">    nrbhelp 2016</p>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </footer>
+        </p>
     </body>
+        
 </html>
 

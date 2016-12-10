@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '%lwri8#_7@gzw1-6rr5q$^66@#=io2_p^oy^9cw!$%dxx$2e^d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['nrbhelp.pythonanywhere.com']
@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+                    
 ROOT_URLCONF = 'ntlhelp.urls'
 
 TEMPLATES = [
@@ -122,3 +122,8 @@ USE_TZ = True
 STATIC_ROOT =  os.path.join(BASE_DIR, 'static/')
 
 STATIC_URL = '/static/'
+
+# Session
+
+
+    
