@@ -26,13 +26,13 @@ SECRET_KEY = '%lwri8#_7@gzw1-6rr5q$^66@#=io2_p^oy^9cw!$%dxx$2e^d'
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['nrbhelp.pythonanywhere.com']
+ALLOWED_HOSTS = ['nrbhelp.ru']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'help.apps.HelpConfig',
+    'help',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
