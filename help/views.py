@@ -54,15 +54,18 @@ def index(request):
 
 def order(request, order_id):
     if request.method == "POST":
-        if "ok_button" in request.POST:
-            comment_text     = request.POST["comment_text"]
-            orr              = Order.objects.get(id=order_id)
+        if request.user.is_authenticated(): 
+            if "ok_button" in request.POST:
+                comment_text     = request.POST["comment_text"]
+                orr              = Order.objects.get(id=order_id)
 
-            cmt              = Comment()
+                cmt              = Comment()
 
-            cmt.order   = orr
-            cmt.comment_text = comment_text
-            cmt.save()
+                cmt.order   = orr
+                cmt.comment_text = comment_text
+                cmt.save()
+            
+                
 
     latest_cmt_list = Comment.objects.all()[::-1]
     order = Order.objects.get(id = order_id)
@@ -71,7 +74,8 @@ def order(request, order_id):
         user = request.user
         contex = {"latest_cmt_list":latest_cmt_list,"order":order,"user":user,"is_auth":is_auth,}
     else:
-        contex = {"latest_cmt_list":latest_cmt_list,"order":order,}
+        is_auth = False
+        contex = {"latest_cmt_list":latest_cmt_list,"order":order,"is_auth":is_auth,}
     response = render(request, "help/order.html", contex)
 
     return response 
@@ -185,8 +189,6 @@ def login(request):
 
             if user is not None and user.is_active:
                 auth.login(request, user)
-                if request.user.last_name == "":
-                    return HttpResponseRedirect("/loginned")
                 return HttpResponseRedirect("/")
             else:
                 return HttpResponseRedirect("/")
