@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <html>
         <head>
-            <title>Заказ</title>
+            <title>Онлайн сообщество взаимопомощи в г.Нюрба</title>
             <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
             <link rel="stylesheet" href="{% static 'help/css/bootstrap.min.css' %}">
             <link href="{% static 'help/css/sticky-footer.css' %}" rel="stylesheet">
@@ -11,42 +11,48 @@
 
             <style>
         
-            h1 a {
-                        font-family: 'Lobster';
-                        color: white;
-                    }
-            .page-header {
-                background-color: #FCA205;
-                margin-top: 0;
-                padding: 20px 20px 20px 40px;
-            }
-            .author {
-                color: white;
-                font-family: 'Lobster';
-            }
-            .page-end {       
-                margin-top: 0;
-                padding: 20px 20px 20px 40px;
-                background-color: gray;
-                padding-right: 15px;
-            }
-            .end {
-                padding-left: 525px;
-                font-family: 'Lobster';
-            }
-            .login {
-                color: blue;
-            }
-            .page-header a:hover {
-                        color: white;
-                        text-decoration: none;
-            }
-            body {
-                        background: #F5F5F5;
-                    }
-                    .well {
-                        background: white;
-                    }
+                h1 a {
+                    font-family: 'Lobster';
+                    color: white;
+                }
+                .page-header {
+                    background-color: #FCA205;
+                    margin-top: 0;
+                    padding: 20px 20px 20px 40px;
+                }
+                .author {
+                    color: white;
+                    font-family: 'Lobster';
+                }
+                .page-end {       
+                    margin-top: 0;
+                    padding: 20px 20px 20px 40px;
+                    background-color: gray;
+                    padding-right: 15px;
+                }
+                .end {
+                    padding-left: 525px;
+                    font-family: 'Lobster';
+                }
+                .login {
+                    color: blue;
+                }
+                .page-header a:hover {
+                            color: white;
+                            text-decoration: none;
+                }
+                body {
+                            background: #F5F5F5;
+                }
+                .well {
+                    background: white;
+                }
+                .buttons_right{
+                            text-align: right;
+                        }
+                .buttons_left{
+                    text-align: left;
+                }
         </style>
         </head>
     <body>
@@ -54,7 +60,7 @@
 
         
         <div class = "page-header">
-                <h1><a href="/">Онлайн сообщество помощи в г.Нюрба</a></h1>
+                <h1><a href="/">Онлайн сообщество взаимопомощи в г.Нюрба</a></h1>
                 {% if is_auth %}
                         <div class="form-row">
                             <row><a href= "/editprofile/{{user.profile.id}}">Редактировать профиль</a></row>
@@ -80,7 +86,7 @@
 
 
         <div class  = row>
-            <div class = "col-md-4 col-md-offset-4 well">
+            <div class = "col-md-6 col-md-offset-3 well">
                 <p>Просьба:{{order.problem}}</p>
                 <p>Телефон:{{order.telephone}}</p>
                 <p>Комментарии:</p>
@@ -100,7 +106,7 @@
                 </div>
             </div>
             <div class  = row>
-                <div class = "col-md-4 col-md-offset-4 well">
+                <div class = "col-md-6 col-md-offset-3 well">
                 <div class = "button">
                     <form action = "." method = "post">
                         {% csrf_token %}
@@ -111,7 +117,7 @@
                         <div>
                         <p>
                             <div class = "row">
-                                <div class = "col-md-offset-9 col-md-3"> 
+                                <div class = "col-md-offset-9 col-md-3 buttons_right"> 
                                     <input class="btn btn-success" type = "submit" name = "ok_button" value = "OK">
                                 </div>
                             </div>
@@ -129,7 +135,7 @@
                     <div class="container">
                         <div class = "row">
                             <div class = "col-md-offset-4">
-                                <p class="text-muted">   ©nrbhelp 2016</p>
+                                <p class="text-muted"> © nrbhelp 2016</p>
                             </div>
                         </div>
                     </div>

@@ -2,7 +2,7 @@
 
 <html>
         <head>
-            <title>Онлайн сообщество помощи</title>
+            <title>Онлайн сообщество взаимопомощи в г.Нюрба</title>
             <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
             <link rel="stylesheet" href="{% static 'help/css/bootstrap.min.css' %}">
             <link href="{% static 'help/css/sticky-footer.css' %}" rel="stylesheet">
@@ -55,6 +55,12 @@
                     .well {
                         background: white;
                     }
+                    .buttons_right{
+                        text-align: right;
+                    }
+                    .buttons_left{
+                        text-align: left;
+                    }
                 </style>
 
         </head>
@@ -62,7 +68,28 @@
     <body>
 
         <div class = "page-header">
-                <h1><a href="/">Онлайн сообщество помощи в г.Нюрба</a></h1>
+                <h1><a href="/">Онлайн сообщество взаимопомощи в г.Нюрба</a></h1>
+                {% if is_auth %}
+                        <div class="form-row">
+                            <row><a href= "/editprofile/{{user.profile.id}}">Редактировать профиль</a></row>
+                            <row>|</row>
+                            <row><a href= "/logout/">Выйти</a></row>
+                            
+                            
+                            
+                            <div class = "col-lg-9">
+                                <row><a href ="/profile/{{user.profile.id}}">{{user.last_name}} {{user.first_name}}</a></row>
+                            </div>
+
+                        </div>
+
+                {% else %}  
+                     <div class = "col-md-offset-9">
+                        <row><a href="/login/">Войти</a></row>
+                        <row>|</row>
+                        <row><a href="/registrations/">Зарегистрироватся</a></row>
+                    </div>
+                {% endif %}      
         </div>
 
         <div class = "row">
@@ -84,8 +111,8 @@
                             <input type="password" class="form-control" id="password" placeholder="Пароль" name = "password">
                         </div>
                     </div>
-
-                    <input class="btn btn-success" type = "submit" name = "register_button" value = "Зарегестрироватся">
+                    
+                    <div class = "buttons_right"><input class="btn btn-success" type = "submit" name = "register_button" value = "Зарегистрироватся"></div>
            
                 </form>
             </div>

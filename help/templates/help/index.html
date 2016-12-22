@@ -5,7 +5,7 @@
 <html>
         <head>
             <meta charset= "utf-8">
-            <title>Онлайн сообщество помощи</title>
+            <title>Онлайн сообщество взаимопомощи в г.Нюрба</title>
             <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
             <link rel="stylesheet" href="{% static 'help/css/bootstrap.min.css' %}">
             <link href="{% static 'help/css/sticky-footer.css' %}" rel="stylesheet">
@@ -55,14 +55,21 @@
                     .more {
                         padding-left: 115px;
                     }
+                    .buttons_right{
+                        text-align: right;
+                    }
+                    .buttons_left{
+                        text-align: left;
+                    }
             </style>
 
         </head>
 
     <body>
+
         
         <div class = "page-header">
-                <h1><a href=".">Онлайн сообщество помощи в г.Нюрба</a></h1>
+                <h1><a href=".">Онлайн сообщество взаимопомощи в г.Нюрба</a></h1>
                 {% if is_auth %}
                         <div class="form-row">
                             <row><a href= "/editprofile/{{user.profile.id}}">Редактировать профиль</a>
@@ -99,7 +106,7 @@
                             <textarea name = "problem" class="form-control" rows="3" placeholder="Просьба"></textarea>
                         </div>
                         <div class = "row">
-                            <div class = "col-md-4 col-md-offset-8">  
+                            <div class = "col-md-4 col-md-offset-8 buttons_right">  
                                 {% if is_auth == True %}
                                     <input class="btn btn-success " type = "submit" name = "ok_button" value = "Сделать заказ">
                                 {% else %}
@@ -143,7 +150,7 @@
                                 <p>Статус: Уже не активно</p>
                             {% endif %}   
                            
-                            <div class = "form-row">                                              
+                            <div class = "form-row buttons_right">                                              
                                 <div class="col-md-offset-7">
                                     {% if order.profile == user.profile %}
                                     <row>                                       
@@ -151,9 +158,8 @@
                                         <a href="/{{ order.id }}/"><button type="button" class="btn btn-primary btn-sm">Подробнее</button></a>                          
                                     </row>
                                     {% else %}
-                                        <div class = "more">
-                                            <a href="/{{ order.id }}/"><button type="button" class="btn btn-primary btn-sm">Подробнее</button></a>
-                                        </div>                                    
+                                        <a href="/{{ order.id }}/"><button type="button" class="btn btn-primary btn-sm">Подробнее</button></a>
+                                                                      
                                     {% endif %}    
                                 </div>
                             </div>
@@ -164,12 +170,12 @@
         </div>
         <nav aria-label="...">
             <div class = "row">
-                <div class="col-md-offset-4">
+                <div class="col-md-offset-3 col-md-6 buttons_right">
                     {% if latest_order_list.has_next %}
                             <a href = "/?page={{latest_order_list.next_page_number}}"><input data-placement="top" class="btn btn-primary btn-sm" type = "submit" value = "Следующая страница"></a>
                     {% endif %}
                     
-                    <div class="col-md-3">
+                    <div class="col-md-3 buttons_left">
                         {% if latest_order_list.has_previous %}
                             <a href = "/?page={{latest_order_list.previous_page_number}}"><input data-placement="bottom" class="btn btn-primary btn-sm" type = "submit" value = "Предыдущая страница"></a>
                         {% endif %}
@@ -178,17 +184,17 @@
             </div>
         </nav>
 
-        <hr class=half-rule>
+        <hr class=half-rule background-color = "black">
         <p>
-            <footer class="bs-docs-footer">  
+            <footer class="bs-docs-footer ">  
                 <ul class=bs-docs-footer-links> 
                     <div class="container">
                         <div class = "row">
                             <div class = "col-md-offset-4">
-                                <p class="text-muted">   ©nrbhelp 2016</p>
+                                <p class="text-muted">© nrbhelp 2016</p>
                             </div>
                         </div>
-                    </div>
+                    </div
                 </ul>
             </footer>
         </p>

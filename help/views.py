@@ -85,21 +85,24 @@ def registrations(request):
         if "register_button" in request.POST:
             username     = request.POST["login"]
             password     = request.POST["password"]
+            
+            if username!='' and password !='' and (authenticate(username = username, password = password) not in User.objects.all()):
+                user         = User.objects.create_user(username = username, password = password)
+                user.save()
 
-            user         = User.objects.create_user(username = username, password = password)
-            user.save()
-            profile = Profile(user = user)
-            profile.save()
-        
-            user = authenticate(username = username, password = password)
+                profile = Profile(user = user)
+                profile.save()      
 
-            if user is not None and user.is_active:
-                auth.login(request, user)
-                return HttpResponseRedirect("/loginned")
-               
-            return redirect("/")
+                user = authenticate(username = username, password = password)
 
-    response = render(request, 'registration/registrations.html')
+                if user is not None and user.is_active:
+                    auth.login(request, user)
+                    return HttpResponseRedirect("/loginned")
+                   
+                return redirect("/")
+
+    is_auth = False
+    response = render(request, 'registration/registrations.html',{'is_auth':is_auth})
     return response
 
 def edit(request, edit_order_id):
@@ -191,7 +194,7 @@ def login(request):
                 auth.login(request, user)
                 return HttpResponseRedirect("/")
             else:
-                return HttpResponseRedirect("/")
+                return HttpResponseRedirect(".")
 
     response = render(request, 'registration/login.html')
 
