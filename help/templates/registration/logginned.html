@@ -65,7 +65,6 @@
         </head>
 
     <body>
-
         <div class = "page-header">
                 <h1><a href="/">Онлайн сообщество взаимопомощи в г.Нюрба</a></h1>
         </div>
@@ -75,6 +74,12 @@
                 <p> Персональная информация</p>
                 <form class="form-horizontal" action = "." method = "post">
                     {% csrf_token %}
+                    {% if break_message == True %}
+                        <div class="alert alert-danger">
+                          <span class="close" data-dismiss="alert">×</span>
+                          Поля "Имя" или "Фамилия" не заполнены. Заполните, пожалуйста!
+                        </div>
+                    {% endif %}
 
                     <div class="form-group">
                         <label for="first_name" class="col-sm-2 control-label">Имя</label>

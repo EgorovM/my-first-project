@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Order, Comment, Profile
 from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.utils import timezone
+from django.db import IntegrityError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -9,21 +10,25 @@ from django.contrib import auth
 
 def index(request):
     ord_id = None
+    has_error = False
     if request.method == "POST":
         if "ok_button" in request.POST:
             telephone = request.POST["telephone"]
             problem   = request.POST["problem"]
+            if problem != "" and telephone != "":
 
-            orr = Order()
+                orr = Order()
 
-            orr.telephone = telephone
-            orr.problem   = problem
-            orr.pub_date  = timezone.now()
-            orr.profile   = request.user.profile
+                orr.telephone = telephone
+                orr.problem   = problem
+                orr.pub_date  = timezone.now()
+                orr.profile   = request.user.profile
 
-            orr.save()
+                orr.save()
 
-            ord_id = orr.id
+                ord_id = orr.id
+            else:
+                has_error = True
 
     latest_order_list = Order.objects.all()[::-1]
 
@@ -42,10 +47,10 @@ def index(request):
         is_auth = True
         user = request.user
         profile = request.user.profile
-        context = {"latest_order_list":latest_order_list,"paginator":paginator,"is_auth":is_auth,"user":user,}
+        context = {"latest_order_list":latest_order_list,"paginator":paginator,"is_auth":is_auth,"user":user,"has_error":has_error}
     else:
         is_auth = False
-        context = {"latest_order_list":latest_order_list,"paginator":paginator,"is_auth":is_auth}
+        context = {"latest_order_list":latest_order_list,"paginator":paginator,"is_auth":is_auth,"has_error":has_error}
     
     
     response = render(request, "help/index.html",context)
@@ -57,6 +62,7 @@ def order(request, order_id):
         if request.user.is_authenticated(): 
             if "ok_button" in request.POST:
                 comment_text     = request.POST["comment_text"]
+                
                 orr              = Order.objects.get(id=order_id)
 
                 cmt              = Comment()
@@ -81,14 +87,23 @@ def order(request, order_id):
     return response 
 
 def registrations(request):
+    false_message = False
+    false_login   = False
+
     if request.method == "POST":
         if "register_button" in request.POST:
             username     = request.POST["login"]
             password     = request.POST["password"]
             
-            if username!='' and password !='' and (authenticate(username = username, password = password) not in User.objects.all()):
-                user         = User.objects.create_user(username = username, password = password)
-                user.save()
+            if username !='' and password !='':
+                try:
+                    user = User.objects.create_user(username = username, password = password)
+                    user.save()
+
+                except IntegrityError:
+                    false_login = True
+                    response = render(request, 'registration/registrations.html',{"false_login":false_login,"false_message":false_message})
+                    return response
 
                 profile = Profile(user = user)
                 profile.save()      
@@ -98,11 +113,13 @@ def registrations(request):
                 if user is not None and user.is_active:
                     auth.login(request, user)
                     return HttpResponseRedirect("/loginned")
-                   
-                return redirect("/")
+            else:
+                false_message = True
 
     is_auth = False
-    response = render(request, 'registration/registrations.html',{'is_auth':is_auth})
+   
+    context = {'is_auth':is_auth,"false_message":false_message}
+    response = render(request, 'registration/registrations.html',context)
     return response
 
 def edit(request, edit_order_id):
@@ -182,42 +199,51 @@ def editprofile(request, edit_profile_id):
     return response
 
 def login(request):
+    false_message=False
+    false_login  =False
     if request.method == "POST":
 
         if "ok_button" in request.POST:
             login    = request.POST["login"]
             password = request.POST["password"]
-            
-            user = authenticate(username = login, password = password)
+            if login != "" and password != "":
+                user = authenticate(username = login, password = password)
 
-            if user is not None and user.is_active:
-                auth.login(request, user)
-                return HttpResponseRedirect("/")
+                if user is not None and user.is_active:
+                    auth.login(request, user)
+                    return HttpResponseRedirect("/")
+                else:
+                    false_login = True
             else:
-                return HttpResponseRedirect(".")
-
-    response = render(request, 'registration/login.html')
+                false_message = True
+                
+    context = {"false_login":false_login,"false_message":false_message}
+    response = render(request, 'registration/login.html',context)
 
     return response
 
 def logginned(request):
+    break_message = False
     if request.method == "POST":
         if "ok_button" in request.POST:
             first_name = request.POST["first_name"]
             last_name  = request.POST["last_name"]
             address    = request.POST["address"]
             telephone  = request.POST["telephone"]
+            if first_name != "" and last_name != "":
+                profile = request.user.profile
+                user = request.user
+                user.first_name = first_name
+                user.last_name  = last_name
+                profile.address         = address
+                profile.telephone       = telephone
+                user.save()
+                profile.save()
+                return redirect("/")
+            else:
+                break_message = True
 
-            profile = request.user.profile
-            user = request.user
-            user.first_name = first_name
-            user.last_name  = last_name
-            profile.address         = address
-            profile.telephone       = telephone
-            user.save()
-            profile.save()
-            return redirect("/")
-    return render(request, 'registration/logginned.html')
+    return render(request, 'registration/logginned.html',{"break_message":break_message})
 
 def logout(request):
     auth.logout(request)

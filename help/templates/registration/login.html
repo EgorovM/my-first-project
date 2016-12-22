@@ -97,6 +97,17 @@
                 <h1><p> Войти </p></h1>
                 <form class="form-horizontal" action = "." method = "post">
                     {% csrf_token %}
+                    {% if false_message == True %}
+                        <div class="alert alert-danger">
+                          <span class="close" data-dismiss="alert">×</span>
+                          Поля "Логин" или "Пароль" не заполнены. Заполните, пожалуйста!
+                        </div>
+                    {% elif false_login == True %}
+                        <div class="alert alert-danger">
+                          <span class="close" data-dismiss="alert">×</span>
+                          Неправильный логин или пароль!
+                        </div>
+                    {% endif %}
 
                     <div class="form-group">
                         <label for="login" class="col-sm-2 control-label">Логин</label>

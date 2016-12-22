@@ -97,6 +97,18 @@
                 <h1><p> Регистрация </p></h1>
                 <form class="form-horizontal" action = "." method = "post">
                     {% csrf_token %}
+                    {% if false_message == True %}
+                        <div class="alert alert-danger">
+                          <span class="close" data-dismiss="alert">×</span>
+                          Поля "Логин" или "Пароль" не заполнены. Заполните, пожалуйста!
+                        </div>
+                        
+                    {% elif false_login == True %}
+                        <div class="alert alert-danger">
+                          <span class="close" data-dismiss="alert">×</span>
+                          Такой логин уже существует
+                        </div>
+                    {% endif %}
 
                     <div class="form-group">
                         <label for="login" class="col-sm-2 control-label">Логин</label>
@@ -112,6 +124,7 @@
                         </div>
                     </div>
                     
+
                     <div class = "buttons_right"><input class="btn btn-success" type = "submit" name = "register_button" value = "Зарегистрироватся"></div>
            
                 </form>
