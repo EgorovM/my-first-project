@@ -172,12 +172,12 @@
             <div class = "row">
                 <div class="col-md-offset-3 col-md-6 buttons_right">
                     {% if latest_order_list.has_next %}
-                            <a href = "/?page={{latest_order_list.next_page_number}}"><input data-placement="top" class="btn btn-primary btn-sm" type = "submit" value = "Следующая страница"></a>
+                            <a href = "/?page={{latest_order_list.next_page_number}}"><input data-placement="top" class="btn btn-primary btn-sm" type = "submit" value = "Следующая страница &larr"></a>
                     {% endif %}
                     
                     <div class="col-md-3 buttons_left">
                         {% if latest_order_list.has_previous %}
-                            <a href = "/?page={{latest_order_list.previous_page_number}}"><input data-placement="bottom" class="btn btn-primary btn-sm" type = "submit" value = "Предыдущая страница"></a>
+                            <a href = "/?page={{latest_order_list.previous_page_number}}"><input data-placement="bottom" class="btn btn-primary btn-sm" type = "submit" value = "Предыдущая страница &rarr"></a>
                         {% endif %}
                     </div>
                 </div>

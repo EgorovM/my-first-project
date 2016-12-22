@@ -27,7 +27,7 @@ def index(request):
 
     latest_order_list = Order.objects.all()[::-1]
 
-    paginator = Paginator(latest_order_list,3)
+    paginator = Paginator(latest_order_list,10)
 
     page = request.GET.get('page')
     
