@@ -53,6 +53,9 @@
                 .buttons_left{
                     text-align: left;
                 }
+                p1{
+                    padding-left: 50px
+                }
         </style>
         </head>
     <body>
@@ -96,37 +99,36 @@
                         {% if order.id == comment.order.id %}
                             <p>-----------------------------</p>
                             <p>Комментарий:</p>
-                            <div class = "row">
-                                <div class = "col-md-1 col-md-offset-1">
-                                        </p>{{comment.comment_text}}</p>
-                                </div>
+                                 <p1>{{comment.comment_text}}</p1>
                             </div>
                         {% endif %}
                     {% endfor %}
                 </div>
             </div>
-            <div class  = row>
-                <div class = "col-md-6 col-md-offset-3 well">
-                <div class = "button">
-                    <form action = "." method = "post">
-                        {% csrf_token %}
-                        {% if is_auth != False %}
-                            <div>
-                                <label for = "comment_text"> Написать комментарий: </label>
-                                <textarea name = "comment_text" class="form-control" rows="3" placeholder="Комментарий"></textarea>
-                            </div>
-                            <div>
-                                <p>
-                                    <div class = "row">
-                                        <div class = "col-md-offset-9 col-md-3 buttons_right"> 
-                                            <input class="btn btn-success" type = "submit" name = "ok_button" value = "OK">
-                                        </div>
+            {% if is_auth != False %}
+                <div class  = row>
+                    <div class = "col-md-6 col-md-offset-3 well">
+                        <div class = "button">
+                            <form action = "." method = "post">
+                                {% csrf_token %}
+                                
+                                    <div>
+                                        <label for = "comment_text"> Написать комментарий: </label>
+                                        <textarea name = "comment_text" class="form-control" rows="3" placeholder="Комментарий"></textarea>
                                     </div>
-                                </p>
-                            </div>
-                        {% endif %}
-                    </form>
-                </div>
+                                    <div>
+                                        <p>
+                                            <div class = "row">
+                                                <div class = "col-md-offset-9 col-md-3 buttons_right"> 
+                                                    <input class="btn btn-success" type = "submit" name = "ok_button" value = "OK">
+                                                </div>
+                                            </div>
+                                        </p>
+                                    </div>     
+                            </form>
+                        </div>
+                    </div>
+            {% endif %}
             </div>
         </div>
 
