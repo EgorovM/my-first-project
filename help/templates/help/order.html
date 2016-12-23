@@ -90,20 +90,27 @@
 
         <div class  = row>
             <div class = "col-md-6 col-md-offset-3 well">
+                {% if has_error %}
+                    <div class="alert alert-danger">
+                          <span class="close" data-dismiss="alert">×</span>
+                          Напишите комментарий.
+                    </div>
+                {% endif %}
                 <p>Просьба:{{order.problem}}</p>
                 <p>Телефон:{{order.telephone}}</p>
                 <p>Комментарии:</p>
-            <div class = comment>
-               
-                    {% for comment in latest_cmt_list %}
-                        {% if order.id == comment.order.id %}
-                            <p>-----------------------------</p>
-                            <p>Комментарий:</p>
-                                 <p1>{{comment.comment_text}}</p1>
+           
+                {% for comment in latest_cmt_list %}
+                    {% if order.id == comment.order.id %}
+                        <p>----------------------------------------------------------------------------------------------------------------------------</p>
+                        <div class = "row">  
+                            <div class = "col-md-12">                      
+                                <p>Комментарий:</p>
+                                <p1>{{comment.comment_text}}</p1> 
                             </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                        </div>                     
+                    {% endif %}
+                {% endfor %}
             </div>
             {% if is_auth != False %}
                 <div class  = row>
@@ -112,19 +119,19 @@
                             <form action = "." method = "post">
                                 {% csrf_token %}
                                 
-                                    <div>
-                                        <label for = "comment_text"> Написать комментарий: </label>
-                                        <textarea name = "comment_text" class="form-control" rows="3" placeholder="Комментарий"></textarea>
-                                    </div>
-                                    <div>
-                                        <p>
-                                            <div class = "row">
-                                                <div class = "col-md-offset-9 col-md-3 buttons_right"> 
-                                                    <input class="btn btn-success" type = "submit" name = "ok_button" value = "OK">
-                                                </div>
+                                <div>
+                                    <label for = "comment_text"> Написать комментарий: </label>
+                                    <textarea name = "comment_text" class="form-control" rows="3" placeholder="Комментарий"></textarea>
+                                </div>
+                                <div>
+                                    <p>
+                                        <div class = "row">
+                                            <div class = "col-md-offset-9 col-md-3 buttons_right"> 
+                                                <input class="btn btn-success" type = "submit" name = "ok_button" value = "OK">
                                             </div>
-                                        </p>
-                                    </div>     
+                                        </div>
+                                    </p>
+                                </div>     
                             </form>
                         </div>
                     </div>

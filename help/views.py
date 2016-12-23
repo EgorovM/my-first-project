@@ -58,18 +58,21 @@ def index(request):
     return response
 
 def order(request, order_id):
+    has_error = False
     if request.method == "POST":
         if request.user.is_authenticated(): 
             if "ok_button" in request.POST:
                 comment_text     = request.POST["comment_text"]
-                
-                orr              = Order.objects.get(id=order_id)
+                if comment_text != '':
+                    orr              = Order.objects.get(id=order_id)
 
-                cmt              = Comment()
+                    cmt              = Comment()
 
-                cmt.order   = orr
-                cmt.comment_text = comment_text
-                cmt.save()
+                    cmt.order   = orr
+                    cmt.comment_text = comment_text
+                    cmt.save()
+                else:
+                    has_error = True
             
                 
 
@@ -78,11 +81,11 @@ def order(request, order_id):
     if request.user.is_authenticated():
         is_auth = True
         user = request.user
-        contex = {"latest_cmt_list":latest_cmt_list,"order":order,"user":user,"is_auth":is_auth,}
+        context = {"latest_cmt_list":latest_cmt_list,"order":order,"user":user,"is_auth":is_auth,"has_error":has_error}
     else:
         is_auth = False
-        contex = {"latest_cmt_list":latest_cmt_list,"order":order,"is_auth":is_auth,}
-    response = render(request, "help/order.html", contex)
+        context = {"latest_cmt_list":latest_cmt_list,"order":order,"is_auth":is_auth,"has_error":has_error}
+    response = render(request, "help/order.html", context)
 
     return response 
 
