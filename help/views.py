@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Order, Comment, Profile
+from .models import Order, Comment, Profile,Counter
 from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.utils import timezone
 from django.db import IntegrityError
@@ -7,10 +7,22 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib import auth
+from django.utils import timezone
+import datetime
 
 def index(request):
     ord_id = None
     has_error = False
+
+    if Counter.objects.filter(date = datetime.date.today()).exists():
+        a = Counter.objects.get(date = datetime.date.today())
+        a.count = a.count + 1
+        a.save()
+    else:
+        a = Counter()
+        a.count = 1
+        a.save()
+    
     if request.method == "POST":
         if "ok_button" in request.POST:
             telephone = request.POST["telephone"]
