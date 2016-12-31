@@ -5,3 +5,4 @@ admin.site.register(Order)
 admin.site.register(Comment)
 admin.site.register(Profile)
 admin.site.register(Counter)
+

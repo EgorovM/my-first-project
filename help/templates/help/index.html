@@ -48,6 +48,7 @@
                     }
                     body {
                         background: #F5F5F5;
+                        
                     }
                     .well {
                         background: white;
@@ -61,6 +62,9 @@
                     .buttons_left{
                         text-align: left;
                     }
+                    .profile_window{
+                        padding-left:20px;
+                    }
             </style>
 
         </head>
@@ -69,60 +73,97 @@
 
         
         <div class = "page-header">
-                <h1><a href=".">Онлайн сообщество взаимопомощи в г.Нюрба</a></h1>
-                {% if is_auth %}
-                        <div class="form-row">
-                            <row><a href= "/editprofile/{{user.profile.id}}">Редактировать профиль</a>
-                            |
-                            <a href= "/logout/">Выйти</a></row>
-                            
-                            
-                            
-                            <div class = "col-lg-9">
-                                <row><a href ="/profile/{{user.profile.id}}">{{user.last_name}} {{user.first_name}}</a></row>
-                            </div>
-
+            <h1><a href=".">Онлайн сообщество взаимопомощи в г.Нюрба</a></h1>
+            {% if is_auth %}
+                    <div class="form-row">
+                        <row><a href= "/editprofile/{{user.profile.id}}">Редактировать профиль</a>
+                        |
+                        <a href= "/logout/">Выйти</a></row>
+                        
+                        
+                        
+                        <div class = "col-lg-9">
+                            <row><a href ="/profile/{{user.profile.id}}">{{user.last_name}} {{user.first_name}}</a></row>
                         </div>
 
-                {% else %}  
-                     <div class = "col-md-offset-9">
-                        <row><a href="/login/">Войти</a></row>
-                        <row>|</row>
-                        <row><a href="/registrations/">Зарегистрироватся</a></row>
                     </div>
-                {% endif %}      
+
+            {% else %}  
+                 <div class = "col-md-offset-9">
+                    <row><a href="/login/">Войти</a></row>
+                    <row>|</row>
+                    <row><a href="/registrations/">Зарегистрироватся</a></row>
+                </div>
+            {% endif %}      
         </div>
+{{ user.profile.image }}
         {% if is_auth == True %}
             <div class = "row">
-                <div class = "col-md-6 col-md-offset-3 well">
-                        <form action = "." method = "post">
-                            {% csrf_token %}
-                            
+                <div class="col-xs-6 col-md-3 profile_window">
+                    <div class="thumbnail">  
+                        <div class = "well">
+                            <p>           
+                                {% if user.profile.image %}    
+                                    <img src = "{{user.profile.image.url}}" class="img-responsive"> 
+                                {% else %}
+                                    <img src = "media/images/empty_image.png" class = "img-responsive">
+                                {% endif %}
+                            </p>
 
-                            {% if has_error == True %}
-                                <div class="alert alert-danger">
-                                  <span class="close" data-dismiss="alert">×</span>
-                                  Заполните все поля, пожалуйста.
-                                </div>
-                            {% endif %}
                             <div class="form-group">
-                                <label for="telephone">Телефон:</label>
-                                <input name = "telephone" type="text" id="disabledTextInput" class="form-control" placeholder="Телефон" value = "{{user.profile.telephone}}">
+                                <label for = "first_name">Имя:   </label>
+                                <row name="first_name"> {{user.first_name}}</row>
                             </div>
                             <div class="form-group">
-                                <label for="problem">Просьба:</label>
-                                <textarea name = "problem" class="form-control" rows="3" placeholder="Просьба"></textarea>
+                                <label for = "last_name">Фамилия:</label>
+                                <row name="last_name"> {{user.last_name}}</row>
                             </div>
-                            <div class = "row">
-                                <div class = "col-md-4 col-md-offset-8 buttons_right">  
-                            <input class="btn btn-success " type = "submit" name = "ok_button" value = "Сделать заказ">                                
-                                </div>
+                            <div class="form-group">
+                                <label for = "telephone">Телефон:</label>
+                                <row name="telephone">{{user.profile.telephone}}</row>
                             </div>
-                        </form>
+                            <div class="form-group">
+                                <label for = "address">Адрес:</label>
+                                <row name="address"> {{user.profile.address}}</row>
+                            </div>      
+                        
+                            <form action="." method = "post">
+                                {% csrf_token %}
+                                <input class="btn btn-primary " type = "submit" name = "profile_order" value = "Посмотреть мои заказы">
+                            </form>            
+                        </div>
+                    </div>
+                </div>
+            
+                <div class = "col-md-6 well">
+                    <form action = "." method = "post">
+                        {% csrf_token %}
+                        
+
+                        {% if has_error == True %}
+                            <div class="alert alert-danger">
+                              <span class="close" data-dismiss="alert">×</span>
+                              Заполните все поля, пожалуйста.
+                            </div>
+                        {% endif %}
+                        <div class="form-group">
+                            <label for="telephone">Телефон:</label>
+                            <input name = "telephone" type="text" id="disabledTextInput" class="form-control" placeholder="Телефон" value = "{{user.profile.telephone}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="problem">Просьба:</label>
+                            <textarea name = "problem" class="form-control" rows="3" placeholder="Просьба"></textarea>
+                        </div>
+                        <div class = "row">
+                            <div class = "col-md-4 col-md-offset-8 buttons_right">  
+                        <input class="btn btn-success " type = "submit" name = "ok_button" value = "Сделать заказ">                                
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         {% endif %}
-        <div>
+            <div>
                 {% for order in latest_order_list %}
                     <div class="row">
                         <div class = "col-md-6 col-md-offset-3 well">

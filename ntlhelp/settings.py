@@ -125,5 +125,5 @@ STATIC_URL = '/static/'
 
 # Session
 
-
+MEDIA_URL = '/media/'
     

@@ -8,7 +8,27 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.utils import timezone
+from PIL      import Image
 import datetime
+import json
+import StringIO
+import threading
+
+AVATAR_SIZE  = (200, 200)
+PICTURE_SIZE = (500, 500)
+
+def resizeImage(file, size):
+	imagefile  = StringIO.StringIO(file.read())
+	image      = Image.open(imagefile)
+
+	image.thumbnail(size, Image.ANTIALIAS)
+
+	imagefile = StringIO.StringIO()
+	image.save(imagefile, 'PNG')
+
+	file.file = imagefile
+
+	return file
 
 def index(request):
     ord_id = None
@@ -22,7 +42,7 @@ def index(request):
         a = Counter()
         a.count = 1
         a.save()
-    
+    profile_order = False
     if request.method == "POST":
         if "ok_button" in request.POST:
             telephone = request.POST["telephone"]
@@ -42,7 +62,13 @@ def index(request):
             else:
                 has_error = True
 
-    latest_order_list = Order.objects.all()[::-1]
+        if "profile_order" in request.POST:
+            profile_order = True
+    user = request.user
+    if profile_order == False:
+        latest_order_list = Order.objects.all()[::-1]
+    else:
+        latest_order_list = Order.objects.filter(profile = user.profile)[::-1]
 
     paginator = Paginator(latest_order_list,10)
 
@@ -59,10 +85,10 @@ def index(request):
         is_auth = True
         user = request.user
         profile = request.user.profile
-        context = {"latest_order_list":latest_order_list,"paginator":paginator,"is_auth":is_auth,"user":user,"has_error":has_error}
+        context = {"latest_order_list":latest_order_list,"paginator":paginator,"is_auth":is_auth,"user":user,"has_error":has_error,}
     else:
         is_auth = False
-        context = {"latest_order_list":latest_order_list,"paginator":paginator,"is_auth":is_auth,"has_error":has_error}
+        context = {"latest_order_list":latest_order_list,"paginator":paginator,"is_auth":is_auth,"has_error":has_error,}
     
     
     response = render(request, "help/index.html",context)
@@ -180,26 +206,32 @@ def profile(request,views_profile_id):
 
 
 def editprofile(request, edit_profile_id):
-    if request.method == "POST":
-        if "ok_button" in request.POST:
-            address    = request.POST["address"]
-            telephone  = request.POST["telephone"]
-            last_name  = request.POST["last_name"]
-            first_name = request.POST["first_name"]
+    if request.method == "POST" and "save" in request.POST:
+        new_first_name   = request.POST["first_name"]
+        new_last_name    = request.POST["last_name"]
 
-            profile    = request.user.profile
-            user       = request.user
+        new_avatar = ""
+        if "avatar" in request.FILES:
+            new_avatar = request.FILES["avatar"]
+            new_avatar = resizeImage(new_avatar, AVATAR_SIZE)
 
-            profile.address = address
-            profile.telephone = telephone
-            
-            user.last_name = last_name
-            user.first_name = first_name
+        remove_avatar = ""
+        if "remove_avatar" in request.POST:
+            remove_avatar = request.POST["remove_avatar"]
 
-            profile.save()
-            user.save()
+        user = request.user
 
-            return redirect('/')
+        user.first_name          = new_first_name
+        user.last_name           = new_last_name
+
+        if remove_avatar == "remove":
+            user.profile.image = ""
+        else:
+            if new_avatar != "":
+                user.profile.image = new_avatar
+
+        user.profile.save()
+        user.save()
 
     user = request.user
     profile = Profile.objects.get(id = edit_profile_id)
@@ -245,13 +277,23 @@ def logginned(request):
             last_name  = request.POST["last_name"]
             address    = request.POST["address"]
             telephone  = request.POST["telephone"]
+            image = ""
+            if "image" in request.FILES:
+                image = request.FILES["avatar"]
+                image = resizeImage(image, AVATAR_SIZE)
+
             if first_name != "" and last_name != "":
                 profile = request.user.profile
                 user = request.user
-                user.first_name = first_name
-                user.last_name  = last_name
-                profile.address         = address
-                profile.telephone       = telephone
+                user.first_name   = first_name
+                user.last_name    = last_name
+                profile.addres    = address
+                profile.telephone = telephone
+                if image == "":
+                    profile.image = "images/empty_image.png"
+                else:
+                    profile.image = image
+
                 user.save()
                 profile.save()
                 return redirect("/")
