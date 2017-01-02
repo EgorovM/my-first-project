@@ -49,6 +49,9 @@
                         color:white;
                         text-decoration: none;
                     }
+                    a:hover{
+                        text-decoration: none;
+                    }
                     body {
                         background: #F5F5F5;
                         
@@ -66,7 +69,7 @@
                         text-align: left;
                     }
                     .profile_window{
-                        padding-left:20px;
+                        margin-left:30px;
                     }
             </style>
 
@@ -86,7 +89,6 @@
                         
                         
                         <div class = "col-lg-9">
-                            <row><a href ="/profile/{{user.profile.id}}">{{user.last_name}} {{user.first_name}}</a></row>
                         </div>
 
                     </div>
@@ -105,18 +107,19 @@
                 <div class="col-xs-6 col-md-3 profile_window">
 
                         <div class = "well">
-                            <p>           
+                           <a href = "/profile/{{user.profile.id}}">
                                 {% if user.profile.image %}    
                                     <img src = "{{user.profile.image.url}}" class = "img-rounded"> 
                                 {% else %}
                                     <img src = "media/images/empty_image.png" class = "img-rounded">
                                 {% endif %}
-                            </p>
-
-                            <div class="form-group">
-                                <h1>{{user.first_name}}
-                                {{user.last_name}}</h1>
-                            </div>
+                            </a>
+                            <a href = "/profile/{{user.profile.id}}">
+                                <div class="form-group">
+                                    <h2>{{user.first_name}}
+                                    {{user.last_name}}</h2>
+                                </div>
+                            </a>
                             {% if user.profile.address %}
                                 <div class="form-group">
                                     <p1> Телефон </p1>

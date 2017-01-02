@@ -199,8 +199,9 @@ def profile(request,views_profile_id):
         is_auth = True
     else:
         is_auth = False
+    latest_order_list = Order.objects.filter(profile = profile)
 
-    context = {"user":user,"order":order,"is_auth":is_auth,"profile":profile}
+    context = {"user":user,"order":order,"is_auth":is_auth,"profile":profile,"latest_order_list":latest_order_list}
     response = render(request, 'help/profile.html',context)
     return response
 
