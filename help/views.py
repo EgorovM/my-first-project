@@ -192,16 +192,16 @@ def edit(request, edit_order_id):
     return response
 
 def profile(request,views_profile_id):
-    user = request.user
     profile = Profile.objects.get(id = views_profile_id)
-
+    user = profile.user
+    views_profile = request.user.profile
     if request.user.is_authenticated():
         is_auth = True
     else:
         is_auth = False
     latest_order_list = Order.objects.filter(profile = profile)
 
-    context = {"user":user,"order":order,"is_auth":is_auth,"profile":profile,"latest_order_list":latest_order_list}
+    context = {"user":user,"views_profile":views_profile,"order":order,"is_auth":is_auth,"profile":profile,"latest_order_list":latest_order_list}
     response = render(request, 'help/profile.html',context)
     return response
 

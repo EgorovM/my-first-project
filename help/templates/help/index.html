@@ -166,6 +166,7 @@
                 
                     {% for order in latest_order_list %}
                         <div class = "col-md-12 well">
+                            <p>Автор: <a href="/profile/{{order.profile.id}}">{{order.profile.user.username}}</a><p>
                             <p>Опубликовано: {{ order.pub_date }}</p>
                             <p>Просьба: {{order.problem}}</p>
                             <p>Телефон: {{order.telephone}}</p>
@@ -213,9 +214,10 @@
                 {% for order in latest_order_list %}
                     
                         <div class = "well">
+                            <p>Автор: <a href="/profile/{{order.profile.id}}">{{order.profile.user.username}}</a><p>
                             <p>Опубликовано: {{ order.pub_date }}</p>
                             <p>Просьба: {{order.problem}}</p>
-                            <p>Телефон: {{order.telephone}}</p>
+                            <p>Телефон: {{order.telephone}}</p>                           
                             {% if order.status == True %}
                                 <p>Статус: активно</p>
                             {% else %}
