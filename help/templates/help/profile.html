@@ -133,7 +133,7 @@
                            
                             <div class = "form-row buttons_right">                                              
                                 <div class="col-md-offset-7">
-                                    {% if order.profile == views_profile %}
+                                    {% if views_profile != False and order.profile == views_profile %}
                                     <row>                                       
                                         <a href="/order/{{order.id}}"><button type="button" class="btn btn-danger btn-sm">Редактировать</button></a>
                                         <a href="/{{ order.id }}/"><button type="button" class="btn btn-primary btn-sm">Подробнее</button></a>                          

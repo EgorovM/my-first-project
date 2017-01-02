@@ -194,11 +194,14 @@ def edit(request, edit_order_id):
 def profile(request,views_profile_id):
     profile = Profile.objects.get(id = views_profile_id)
     user = profile.user
-    views_profile = request.user.profile
+    
     if request.user.is_authenticated():
         is_auth = True
+        views_profile = request.user.profile
     else:
         is_auth = False
+        views_profile = False
+
     latest_order_list = Order.objects.filter(profile = profile)
 
     context = {"user":user,"views_profile":views_profile,"order":order,"is_auth":is_auth,"profile":profile,"latest_order_list":latest_order_list}
