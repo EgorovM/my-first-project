@@ -15,6 +15,9 @@
             <script src="{% static 'help/js/bootstrap.min.js' %}"></script>
 
             <style>
+                    p1{
+                        text-decoration: underline;
+                    }
                     h1 a {
                         font-family: 'Lobster';
                         color: white;                       
@@ -100,73 +103,66 @@
         {% if is_auth == True %}
             <div class = "row">
                 <div class="col-xs-6 col-md-3 profile_window">
-                    <div class="thumbnail">  
+
                         <div class = "well">
                             <p>           
                                 {% if user.profile.image %}    
-                                    <img src = "{{user.profile.image.url}}" class="img-responsive"> 
+                                    <img src = "{{user.profile.image.url}}" class = "img-rounded"> 
                                 {% else %}
-                                    <img src = "media/images/empty_image.png" class = "img-responsive">
+                                    <img src = "media/images/empty_image.png" class = "img-rounded">
                                 {% endif %}
                             </p>
 
                             <div class="form-group">
-                                <label for = "first_name">Имя:   </label>
-                                <row name="first_name"> {{user.first_name}}</row>
+                                <h1>{{user.first_name}}
+                                {{user.last_name}}</h1>
                             </div>
-                            <div class="form-group">
-                                <label for = "last_name">Фамилия:</label>
-                                <row name="last_name"> {{user.last_name}}</row>
-                            </div>
-                            <div class="form-group">
-                                <label for = "telephone">Телефон:</label>
-                                <row name="telephone">{{user.profile.telephone}}</row>
-                            </div>
-                            <div class="form-group">
-                                <label for = "address">Адрес:</label>
-                                <row name="address"> {{user.profile.address}}</row>
-                            </div>      
-                        
-                            <form action="." method = "post">
-                                {% csrf_token %}
-                                <input class="btn btn-primary " type = "submit" name = "profile_order" value = "Посмотреть мои заказы">
-                            </form>            
-                        </div>
-                    </div>
-                </div>
-            
-                <div class = "col-md-6 well">
-                    <form action = "." method = "post">
-                        {% csrf_token %}
-                        
+                            {% if user.profile.address %}
+                                <div class="form-group">
+                                    <p1> Телефон </p1>
+                                    <p>{{user.profile.telephone}}</p>
+                                </div>
+                            {% endif %}
 
-                        {% if has_error == True %}
-                            <div class="alert alert-danger">
-                              <span class="close" data-dismiss="alert">×</span>
-                              Заполните все поля, пожалуйста.
-                            </div>
-                        {% endif %}
-                        <div class="form-group">
-                            <label for="telephone">Телефон:</label>
-                            <input name = "telephone" type="text" id="disabledTextInput" class="form-control" placeholder="Телефон" value = "{{user.profile.telephone}}">
-                        </div>
-                        <div class="form-group">
-                            <label for="problem">Просьба:</label>
-                            <textarea name = "problem" class="form-control" rows="3" placeholder="Просьба"></textarea>
-                        </div>
-                        <div class = "row">
-                            <div class = "col-md-4 col-md-offset-8 buttons_right">  
-                        <input class="btn btn-success " type = "submit" name = "ok_button" value = "Сделать заказ">                                
-                            </div>
-                        </div>
-                    </form>
+                            {% if user.profile.address %}
+                                <div class="form-group">
+                                    <p1> Адрес </p1>
+                                    <p> {{user.profile.address}}</p>
+                                </div>      
+                            {% endif %}
+                        </div>     
                 </div>
-            </div>
-        {% endif %}
-            <div>
-                {% for order in latest_order_list %}
-                    <div class="row">
-                        <div class = "col-md-6 col-md-offset-3 well">
+                <div class = "row">
+                    <div class = "col-md-6">
+                        <div class = "well">
+                            <form action = "." method = "post">
+                                {% csrf_token %}
+                                
+
+                                {% if has_error == True %}
+                                    <div class="alert alert-danger">
+                                      <span class="close" data-dismiss="alert">×</span>
+                                      Заполните все поля, пожалуйста.
+                                    </div>
+                                {% endif %}
+                                <div class="form-group">
+                                    <label for="telephone">Телефон:</label>
+                                    <input name = "telephone" type="text" id="disabledTextInput" class="form-control" placeholder="Телефон" value = "{{user.profile.telephone}}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="problem">Просьба:</label>
+                                    <textarea name = "problem" class="form-control" rows="3" placeholder="Просьба"></textarea>
+                                </div>
+                                <div class = "row">
+                                    <div class = "col-md-4 col-md-offset-8 buttons_right">  
+                                <input class="btn btn-success " type = "submit" name = "ok_button" value = "Сделать заказ">                                
+                                    </div>
+                                </div>
+                            </form>
+                        </div>                   
+                
+                    {% for order in latest_order_list %}
+                        <div class = "col-md-12 well">
                             <p>Опубликовано: {{ order.pub_date }}</p>
                             <p>Просьба: {{order.problem}}</p>
                             <p>Телефон: {{order.telephone}}</p>
@@ -191,33 +187,80 @@
                             </div>
 
                         </div>
-                    </div>
-                {% endfor %}
-        <div class = "row">
-            <div class="col-md-offset-3 col-md-6">
-                <nav aria-label="...">
-                  <ul class="pager">
-                    {% if latest_order_list.has_next %}
-                          <li class="next"><a href="/?page={{latest_order_list.next_page_number}}">Следующая страница <span aria-hidden="true">&rarr;</span></a></li>
-                    {% endif %} 
+                   
+                    {% endfor %}
+                
+                    <nav aria-label="...">
+                      <ul class="pager">
+                        {% if latest_order_list.has_next %}
+                              <li class="next"><a href="/?page={{latest_order_list.next_page_number}}">Следующая страница <span aria-hidden="true">&rarr;</span></a></li>
+                        {% endif %} 
+                        
+                        {% if latest_order_list.has_previous %}
+                            <li class="previous"><a href="/?page={{latest_order_list.previous_page_number}}"><span aria-hidden="true">&larr;</span> Предыдущая страница</a></li>
+                        {% endif %}
+                   
+                      </ul>
+                    </nav>
+                </div>
+            </div>    
+        {% else %}
+            <div class = "row">
+                <div class = "col-md-6 col-md-offset-3">
+                {% for order in latest_order_list %}
                     
-                    {% if latest_order_list.has_previous %}
-                        <li class="previous"><a href="/?page={{latest_order_list.previous_page_number}}"><span aria-hidden="true">&larr;</span> Предыдущая страница</a></li>
-                    {% endif %}
-               
-                  </ul>
-                </nav>
+                        <div class = "well">
+                            <p>Опубликовано: {{ order.pub_date }}</p>
+                            <p>Просьба: {{order.problem}}</p>
+                            <p>Телефон: {{order.telephone}}</p>
+                            {% if order.status == True %}
+                                <p>Статус: Активно</p>
+                            {% else %}
+                                <p>Статус: Уже не активно</p>
+                            {% endif %}   
+                           
+                            <div class = "form-row buttons_right">                                              
+                                <div class="col-md-offset-7">
+                                    {% if order.profile == user.profile %}
+                                    <row>                                       
+                                        <a href="/order/{{order.id}}"><button type="button" class="btn btn-danger btn-sm">Редактировать</button></a>
+                                        <a href="/{{ order.id }}/"><button type="button" class="btn btn-primary btn-sm">Подробнее</button></a>                          
+                                    </row>
+                                    {% else %}
+                                        <a href="/{{ order.id }}/"><button type="button" class="btn btn-primary btn-sm">Подробнее</button></a>
+                                                                      
+                                    {% endif %}    
+                                </div>
+                            </div>   
+                        </div>
+                                     
+                 {% endfor %}
+                 </div>
             </div>
-        </div>
+            <div class = "row">
+                <div class = "col-md-6 col-md-offset-3">
+                    <nav aria-label="...">
+                        <ul class="pager">
+                            {% if latest_order_list.has_next %}
+                                <li class="next"><a href="/?page={{latest_order_list.next_page_number}}">Следующая страница <span aria-hidden="true">&rarr;</span></a></li>
+                            {% endif %} 
 
-        <hr class=half-rule>
-        
+                            {% if latest_order_list.has_previous %}
+                                <li class="previous"><a href="/?page={{latest_order_list.previous_page_number}}"><span aria-hidden="true">&larr;</span> Предыдущая страница</a></li>
+                            {% endif %}
+
+                        </ul>
+                    </nav>
+                </div>
+             </div>
+        {% endif %}    
+        <hr>
         <footer class="bs-docs-footer ">  
             <ul class=bs-docs-footer-links> 
                 <div class="container">
                     <div class = "row">
                         <div class = "col-md-offset-4">
-                            <p class="text-muted">© nrbhelp 2016</p>
+                            <p class="text-muted">&copy; nrbhelp 2016</p>
                         </div>
                     </div>
                 </div>

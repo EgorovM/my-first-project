@@ -14,7 +14,7 @@ import json
 import StringIO
 import threading
 
-AVATAR_SIZE  = (200, 200)
+AVATAR_SIZE  = (254, 169)
 PICTURE_SIZE = (500, 500)
 
 def resizeImage(file, size):
@@ -209,6 +209,9 @@ def editprofile(request, edit_profile_id):
     if request.method == "POST" and "save" in request.POST:
         new_first_name   = request.POST["first_name"]
         new_last_name    = request.POST["last_name"]
+        new_telephone    = request.POST["telephone"]
+        new_address      = request.POST["address"]
+        new_password     = request.POST["password"]
 
         new_avatar = ""
         if "avatar" in request.FILES:
@@ -223,7 +226,10 @@ def editprofile(request, edit_profile_id):
 
         user.first_name          = new_first_name
         user.last_name           = new_last_name
-
+        user.profile.telephone   = new_telephone
+        user.profile.address     = new_address
+        if new_password != "":
+            user.set_password(new_password)
         if remove_avatar == "remove":
             user.profile.image = ""
         else:
@@ -232,6 +238,7 @@ def editprofile(request, edit_profile_id):
 
         user.profile.save()
         user.save()
+        return redirect("/")
 
     user = request.user
     profile = Profile.objects.get(id = edit_profile_id)
@@ -277,26 +284,27 @@ def logginned(request):
             last_name  = request.POST["last_name"]
             address    = request.POST["address"]
             telephone  = request.POST["telephone"]
-            image = ""
+
+            new_image = ""
             if "image" in request.FILES:
-                image = request.FILES["avatar"]
-                image = resizeImage(image, AVATAR_SIZE)
+                new_image = request.FILES["image"]
+                new_image = resizeImage(new_image, AVATAR_SIZE)
 
             if first_name != "" and last_name != "":
                 profile = request.user.profile
                 user = request.user
                 user.first_name   = first_name
                 user.last_name    = last_name
-                profile.addres    = address
+                profile.address   = address
                 profile.telephone = telephone
-                if image == "":
-                    profile.image = "images/empty_image.png"
-                else:
-                    profile.image = image
+
+                if new_image != "":
+				    profile.image = new_image
 
                 user.save()
                 profile.save()
                 return redirect("/")
+
             else:
                 break_message = True
 

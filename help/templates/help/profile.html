@@ -77,25 +77,35 @@
         <div>
             <div class = "row">
                 <div class = "col-md-6 col-md-offset-3 well">
-                    <p> Персональная информация:</p>
-                        <div class="form-group">
-                            <label for = "first_name">Имя:   </label>
-                            <row name="first_name"> {{user.first_name}}</row>
+                    <h3> Персональная информация</h3>
+                    <br>
+                    <div class = "row">
+                        <label class="col-sm-3">Имя</label>
+                        <div class="col-sm-8">
+                         {{ user.first_name }}
                         </div>
-                        <div class="form-group">
-                            <label for = "last_name">Фамилия:</label>
-                             <row name="last_name"> {{user.last_name}}</row>
+                    </div>
+                    <div class = "row">                     
+                        <label class="col-sm-3">Фамилия</label>
+                        <div class="col-sm-8">
+                         {{ user.last_name }}
                         </div>
-                        <div class="form-group">
-                            <label for = "telephone">Телефон:</label>
-                            <row name="telephone"> {{user.profile.telephone}}</row>
+                    </div>
+
+                      <div class="row">
+                        <label class="col-sm-3">Телефон</label>
+                        <div class="col-sm-8">
+                          {{ user.profile.telephone }}
                         </div>
-                        <div class="form-group">
-                            <label for = "address">Адрес:</label>
-                            <row name="address"> {{user.profile.address}}</row>
-                        </div>                
-                    </form>
-                </div>
+                      </div>
+
+                      <div class="row">
+                        <label class="col-sm-3">Адрес</label>
+                        <div class="col-sm-8">
+                          {{ user.profile.address }}
+                        </div>
+                      </div>
+                    </div>
             </div>
         </div>
     </div>
